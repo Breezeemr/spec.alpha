@@ -1459,7 +1459,7 @@
                                (op-unform (kps k) (get x k))))
                            ks))
           ::alt (if maybe
-                  [(unform p0 x)]
+                  (unform p0 x)
                   (let [[k v] x]
                     (op-unform (kps k) v))))))
 

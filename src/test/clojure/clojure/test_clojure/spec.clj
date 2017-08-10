@@ -213,7 +213,12 @@
   (check-conform-unform
     (s/every-kv int? (s/or :i int? :s string?))
     [{10 10 20 "x"}]
-    [{10 10 20 "x"}]))
+    [{10 10 20 "x"}])
+  (check-conform-unform
+    (s/spec (s/cat :outer (s/? (s/cat :inner string?))))
+    [["hi"]]
+    [{:outer {:inner "hi"}}])
+  )
 
 (comment
   (require '[clojure.test :refer (run-tests)])
