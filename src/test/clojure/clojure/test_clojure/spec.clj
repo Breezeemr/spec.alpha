@@ -215,9 +215,13 @@
     [{10 10 20 "x"}]
     [{10 10 20 "x"}])
   (check-conform-unform
-    (s/spec (s/cat :outer (s/? (s/cat :inner string?))))
+    (s/spec (s/? (s/cat :inner string?)))
     [["hi"]]
-    [{:outer {:inner "hi"}}])
+    [{:inner "hi"}])
+  (check-conform-unform
+    (s/spec (s/? string?))
+    [["hi"]]
+    ["hi"])
   )
 
 (comment
