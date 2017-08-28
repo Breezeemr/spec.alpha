@@ -222,7 +222,10 @@
     (s/spec (s/? string?))
     [["hi"]]
     ["hi"])
-  )
+  (check-conform-unform
+    (s/spec (s/? (s/alt :a (s/cat :inner string?) :b number?)))
+    [["hi"]]
+    [[:a {:inner "hi"}]]))
 
 (comment
   (require '[clojure.test :refer (run-tests)])
