@@ -213,19 +213,50 @@
   (check-conform-unform
     (s/every-kv int? (s/or :i int? :s string?))
     [{10 10 20 "x"}]
-    [{10 10 20 "x"}])
+    [{10 10 20 "x"}]))
+
+(deftest unform-regex-op-under-maybe
+  ;; The op under the s/? is:
+  ;; nil
   (check-conform-unform
-    (s/spec (s/? (s/cat :inner string?)))
-    [["hi"]]
-    [{:inner "hi"}])
+    (s/? number?)
+    [[1] []]
+    [1 nil])
+  ;; ::s/amp
   (check-conform-unform
-    (s/spec (s/? string?))
-    [["hi"]]
-    ["hi"])
+    (s/& (s/* number?) #(odd? (count %)))
+    [[1] []]
+    [[1] nil])
+  ;; ::s/rep
   (check-conform-unform
-    (s/spec (s/? (s/alt :a (s/cat :inner string?) :b number?)))
-    [["hi"]]
-    [[:a {:inner "hi"}]]))
+    (s/? (s/* number?))
+    [[1 2 3] []]
+    [[1 2 3] []])
+  (check-conform-unform
+    (s/? (s/+ number?))
+    [[1 2 3] []]
+    [[1 2 3] nil])
+  ;; ::s/pcat
+  (check-conform-unform
+    (s/? (s/cat :a number?))
+    [[1] []]
+    [{:a 1} nil])
+  ;; ::s/alt
+  (check-conform-unform
+    (s/? (s/alt :a number?))
+    [[1] []]
+    [[:a 1] nil])
+  ;; ::s/accept not reachable via unform
+
+  ;; nested s/?
+  (check-conform-unform
+    (s/cat :A (s/? number?))
+    [[1] []]
+    [{:A 1} {}])
+  (check-conform-unform
+    (s/alt :A (s/? number?))
+    [[1]]
+    [[:A 1]]))
 
 (comment
   (require '[clojure.test :refer (run-tests)])

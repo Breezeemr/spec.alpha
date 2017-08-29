@@ -1459,10 +1459,12 @@
                                (op-unform (kps k) (get x k))))
                            ks))
           ::alt (if maybe
-                  (let [{subop ::op :as newp} (reg-resolve! p0)]
-                    (if (some? subop)
-                      (unform newp x)
-                      [(unform newp x)]))
+                  (if (nil? x)
+                    []
+                    (let [{subop ::op :as p0} (reg-resolve! p0)]
+                      (if (some? subop)
+                        (unform p0 x)
+                        [(unform p0 x)])))
                   (let [[k v] x]
                     (op-unform (kps k) v))))))
 
