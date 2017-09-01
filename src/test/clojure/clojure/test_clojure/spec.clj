@@ -224,7 +224,7 @@
     [1 nil])
   ;; ::s/amp
   (check-conform-unform
-    (s/& (s/* number?) #(odd? (count %)))
+    (s/? (s/& (s/* number?) #(odd? (count %))))
     [[1] []]
     [[1] nil])
   ;; ::s/rep
